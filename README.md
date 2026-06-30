@@ -15,3 +15,8 @@ php artisan db:seed
 
 composer run dev
 ````
+
+## Run Test
+````bash
+php artisan test
+````
