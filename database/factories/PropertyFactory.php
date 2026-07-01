@@ -18,12 +18,14 @@ class PropertyFactory extends Factory
      */
     public function definition(): array
     {
+        $type = $this->faker->randomElement(RealStateTypeEnum::values());
+
         return [
             'name' => $this->faker->word(),
-            'real_state_type' => $this->faker->randomElement(RealStateTypeEnum::values()),
+            'real_state_type' => $type,
             'street' => $this->faker->streetName(),
             'external_number' => $this->faker->buildingNumber(),
-            'internal_number' => $this->faker->optional()->buildingNumber(),
+            'internal_number' => $type == RealStateTypeEnum::DEPARTMENT->value || $type == RealStateTypeEnum::COMMERCIAL_GROUND->value ? $this->faker->buildingNumber() : null,
             'neighborhood' => $this->faker->word(),
             'city' => $this->faker->city(),
             'country' => $this->faker->countryCode(),

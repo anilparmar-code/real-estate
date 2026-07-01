@@ -15,6 +15,7 @@ class PropertyController extends Controller
     {
         $properties = Property::query()
             ->select(['id', 'name', 'real_state_type', 'city', 'country'])
+            ->latest('id')
             ->paginate(20);
 
         return PropertyResource::collection($properties);
@@ -22,7 +23,9 @@ class PropertyController extends Controller
 
     public function store(StorePropertyRequest $request)
     {
-        $property = Property::query()->create($request->validated());
+        $data = $request->validated();
+        $data['country'] = strtoupper($data['country']);
+        $property = Property::query()->create($data);
 
         return new PropertyResource($property);
     }
@@ -34,7 +37,9 @@ class PropertyController extends Controller
 
     public function update(UpdatePropertyRequest $request, Property $property)
     {
-        $property->update($request->validated());
+        $data = $request->validated();
+        $data['country'] = strtoupper($data['country']);
+        $property->update($data);
 
         return new PropertyResource($property);
     }
